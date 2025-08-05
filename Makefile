@@ -60,6 +60,13 @@ run:
 	export $(BASE_PARAMETERS) && \
 	$(RUN_COMMAND) l3gs
 
+train:
+	@echo "Running L3GS"
+	cd $(ROOT_DIR) && \
+	export $(BASE_PARAMETERS) && \
+	$(RUN_COMMAND) l3gs-train
+
+
 # ------------------------------------------------------------------------------
 #                             AUXILIARY COMMANDS
 # ------------------------------------------------------------------------------

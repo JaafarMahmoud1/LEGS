@@ -32,4 +32,32 @@ services:
     runtime: nvidia
     command: bash
 
+  l3gs-train:
+    image: l3gs/l3gs_ros2
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    restart: unless-stopped
+    network_mode: host
+    ipc: host
+    pid: host
+    tty: true
+    privileged: true
+    environment:
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR
+      - DISPLAY=$DISPLAY
+      - VGL_DISPLAY=${RENDER_DISPLAY:-":1"}
+      - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_cyclonedds_cpp}
+      - CYCLONEDDS_URI=/cyclonedds.xml
+      - FASTRTPS_DEFAULT_PROFILES_FILE=/fastdds.xml
+    volumes:
+      - /tmp/.X11-unix/:/tmp/.X11-unix
+      - ../:/workspace/l3gs
+      - ${ROOT_DIR}/install/cyclonedds.xml:/cyclonedds.xml
+    runtime: nvidia
+    command: ns-train l3gs
+
 
